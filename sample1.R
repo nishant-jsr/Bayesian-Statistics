@@ -19,7 +19,7 @@
 ###########
 # Solutions:
 
-# 1) Parameters of interest are theta1=true probability the first student
+ # 1) Parameters of interest are theta1=true probability the first student
 #    will answer a question correctly, and theta2=true probability the second
 #    student will answer a question correctly.
 

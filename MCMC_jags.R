@@ -16,10 +16,6 @@ n = length(y)
 data_jags = list(y=y, n=n)
 params = c("mu")
 
-inits = function() {
-  inits = list("mu"=0.0)
-} # optional (and fixed)
-
 mod = jags.model(textConnection(mod_string), data=data_jags, inits=inits)
 #3. running the MCMC sampler
 update(mod, 500) # burn-in
