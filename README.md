@@ -1,3 +1,3 @@
 # Bayesian-Statistics
-##Purpose
-#Sample programs for rudimentary bayesian data analysis
+Purpose:
+Sample programs for rudimentary bayesian data analysis
