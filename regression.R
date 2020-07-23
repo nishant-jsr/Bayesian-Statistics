@@ -1,5 +1,5 @@
 
-http://www.randomservices.org/random/data/Challenger2.txt
+#http://www.randomservices.org/random/data/Challenger2.txt
 # 23 previous space shuttle launches before the Challenger disaster
 # T is the temperature in Fahrenheit, I is the O-ring damage index
 
