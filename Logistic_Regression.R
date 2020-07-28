@@ -99,3 +99,6 @@ dic2 = dic.samples(mod2, n.iter=1e3)
 dic1
 dic2
 summary(mod2_sim)
+
+pm_coef = colMeans(mod2_csim)
+pm_coef
