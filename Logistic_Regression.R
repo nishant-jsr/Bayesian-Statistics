@@ -17,6 +17,7 @@ head(X[,"gravity"])
 colMeans(X)
 apply(X, 2, sd)
 #model
+
 ddexp = function(x, mu, tau) {
   0.5*tau*exp(-tau*abs(x-mu)) 
 }
@@ -99,6 +100,36 @@ dic2 = dic.samples(mod2, n.iter=1e3)
 dic1
 dic2
 summary(mod2_sim)
+HPDinterval(mod2_csim)
+
+par(mfrow=c(3,1))
+densplot(mod2_csim[,1:3], xlim=c(-3.0, 3.0))
+colnames(X)[c(1,4,6)] # variable names
+
+#How do we turn model parameter estimates into model predictions? The key is the form of the model.
+#Remember that the likelihood is Bernoulli, which is 1 with probability p. 
+#We modeled the logit of p as a linear model, which we showed in the first segment of this lesson leads to an exponential form for E(y)=p.
+#Take the output from our model in the last segment. We will use the posterior means as point estimates of the parameters.
 
 pm_coef = colMeans(mod2_csim)
 pm_coef
+
+pm_Xb = pm_coef["int"] + X[,c(1,4,6)] %*% pm_coef[1:3]
+phat = 1.0 / (1.0 + exp(-pm_Xb))
+head(phat)
+
+plot(phat, jitter(dat$r))
+#Suppose we choose a cutoff for these predicted probabilities. 
+#If the model tells us the probability is higher than 0.5, 
+#we will classify the observation as a 1 and if it is less than 0.5, we will classify it as a 0.
+#That way the model classifies each data point.
+#Now we can tabulate these classifications against the truth to see how well the model predicts the original data.
+
+(tab0.5 = table(phat > 0.5, data_jags$y))
+sum(diag(tab0.5)) / sum(tab0.5)
+#The correct classification rate is about 76%, not too bad, but not great.
+
+(tab0.3 = table(phat > 0.3, data_jags$y))
+sum(diag(tab0.3)) / sum(tab0.3)
+
+
