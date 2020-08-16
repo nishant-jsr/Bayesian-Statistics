@@ -12,6 +12,9 @@ knitr::opts_chunk$set(echo = TRUE)
 ## R Markdown
 #Abstract
 
+#Problem
+exploring the relations between the variable Education and other variables such as Fertility and Agriculture.
+
 #Data
 The data chosen here is the swiss dataset in R. 
 
@@ -40,13 +43,44 @@ The data collected are for 47 French-speaking “provinces” at about 1888.
 Here, all variables are scaled to [0, 100], where in the original, all but "Catholic" were scaled to [0, 1].
 
 
-```{r swiss}
-summary(swiss)
-```
+
+
+No omits where found.
 
 ##Scatter plot of the dataset.
 ```{r swiss, echo=FALSE}
 pairs(swiss, panel = panel.smooth, main = "swiss data")
 ```
+We will try to understand the relation between Education and fertility. There is major bunching in it.
+```{r swiss}
+plot(swiss$Fertility ~ swiss$Education)
+summary(lm(Fertility ~ . , data = swiss))
+```
+Preliminary examination shows that a higher rate of Education Indicates lower amount of fertility
+```{r swiss}
+plot(swiss$Agriculture ~ swiss$Education)
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+```
+This graph too indicates that agriculture is taken up by those with poorer education. Social and economic theories very well explain these observations.
+
+#Model
+We will use a linear regression model. We will use normal priors for Education.
+
+#JAGS 
+```{r swiss}
+library("rjags")
+mod1_string = " model {
+    for (i in 1:length(y)) {
+        y[i] ~ dbern(p[i])
+        logit(p[i]) = int + b[1]*gravity[i] + b[2]*ph[i] + b[3]*osmo[i] + b[4]*cond[i] + b[5]*urea[i] + b[6]*calc[i]
+    }
+    int ~ dnorm(0.0, 1.0/25.0)
+    for (j in 1:6) {
+        b[j] ~ ddexp(0.0, sqrt(2.0)) # has variance 1.0
+    }
+} "
+```
+
+
+
+
