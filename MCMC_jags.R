@@ -8,7 +8,7 @@ mod_string = " model {
   mu ~ dt(0.0, 1.0/1.0, 1.0) # location, inverse scale, degrees of freedom
   sig2 = 1.0
 } "
-#2. Seting up the model
+#2. Setting up the model
 set.seed(50)
 y = c(1.2, 1.4, -0.5, 0.3, 0.9, 2.3, 1.0, 0.1, 1.3, 1.9)
 n = length(y)
